@@ -22,23 +22,35 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 			475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800, 825, 850 };
 	private ImageIcon apple;
 	private Random random = new Random();
-	private int xPos = random.nextInt(appleXpos.length);
-	private int yPos = random.nextInt(appleYpos.length);
+	private int xPos = random.nextInt(34);
+	private int yPos = random.nextInt(22);
 	private int moves = 0;
 	private boolean left = false;
 	private boolean right = false;
 	private boolean up = false;
 	private boolean down = false;
 	private int lenthOfSnake = 3;
-	private ImageIcon over,rightMount, downMount, upMount, leftMount, snakeImage, titleImage;
+	private ImageIcon over, rightMount, downMount, upMount, leftMount, snakeImage, titleImage;
+	public int delay = 120;
+	public int speed = 1;
+
 	private Timer timer;
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
 	private int score = 0;
 
 	public Gameplay() {
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
-		timer = new Timer(80, this);
+		timer = new Timer(delay, this);
 		timer.start();
 	}
 
@@ -56,7 +68,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 		graphics.setColor(Color.BLACK);
 		graphics.drawRect(25, 9, 850, 55);
 		// Draw title image.
-		titleImage = new ImageIcon("snaketitle.jpg");
+		titleImage = new ImageIcon("assets/snaketitle.jpg");
 		titleImage.paintIcon(this, graphics, 25, 10);
 		// Draw game borders.
 		graphics.setColor(Color.BLACK);
@@ -66,7 +78,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 		graphics.fillRect(25, 75, 850, 575);
 		graphics.drawString("github.com/BugzTheBunny/SnakeGame", 325, 665);
 
-		rightMount = new ImageIcon("rightmouth.png");
+		rightMount = new ImageIcon("assets/rightmouth.png");
 		rightMount.paintIcon(this, graphics, snakexlength[0], snakeylength[0]);
 		// Draw the Score
 		graphics.setColor(Color.WHITE);
@@ -79,44 +91,49 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 		// Draw the Speed
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 14));
-		graphics.drawString("Speed: " + timer.getDelay(), 780, 60);
+		graphics.drawString("Speed: " + speed, 780, 60);
 
 		for (int i = 0; i < lenthOfSnake; i++) {
 			if (i == 0 && right) {
-				rightMount = new ImageIcon("rightmouth.png");
+				rightMount = new ImageIcon("assets/rightmouth.png");
 				rightMount.paintIcon(this, graphics, snakexlength[i], snakeylength[i]);
 			}
 			if (i == 0 && left) {
-				leftMount = new ImageIcon("leftmouth.png");
+				leftMount = new ImageIcon("assets/leftmouth.png");
 				leftMount.paintIcon(this, graphics, snakexlength[i], snakeylength[i]);
 			}
 			if (i == 0 && down) {
-				downMount = new ImageIcon("downmouth.png");
+				downMount = new ImageIcon("assets/downmouth.png");
 				downMount.paintIcon(this, graphics, snakexlength[i], snakeylength[i]);
 			}
 			if (i == 0 && up) {
-				upMount = new ImageIcon("upmouth.png");
+				upMount = new ImageIcon("assets/upmouth.png");
 				upMount.paintIcon(this, graphics, snakexlength[i], snakeylength[i]);
 			}
 
 			if (i != 0) {
-				snakeImage = new ImageIcon("snakeimage.png");
+				snakeImage = new ImageIcon("assets/snakeimage.png");
 				snakeImage.paintIcon(this, graphics, snakexlength[i], snakeylength[i]);
 			}
 		}
 
-		apple = new ImageIcon("apple.png");
+		apple = new ImageIcon("assets/apple.png");
 		if ((appleXpos[xPos] == snakexlength[0]) && (appleYpos[yPos] == snakeylength[0])) {
 			lenthOfSnake++;
 			score++;
-			xPos = random.nextInt(appleXpos.length);
-			yPos = random.nextInt(appleXpos.length);
+			timer.stop();
+			delay = delay - 2;
+			timer = new Timer(delay, this);
+			speed++;
+			timer.start();
+			xPos = random.nextInt(34);
+			yPos = random.nextInt(22);
 		}
 		apple.paintIcon(this, graphics, appleXpos[xPos], appleYpos[yPos]);
-		
-		for(int b = 1; b<lenthOfSnake; b++) {
-			if(snakexlength[b] == snakexlength[0] && snakeylength[b] == snakeylength[0]) {
-				
+
+		for (int b = 1; b < lenthOfSnake; b++) {
+			if (snakexlength[b] == snakexlength[0] && snakeylength[b] == snakeylength[0]) {
+
 				right = false;
 				left = false;
 				up = false;
@@ -126,14 +143,18 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 				graphics.drawString("Score: " + score, 350, 350);
 				graphics.setColor(Color.WHITE);
 				graphics.setFont(new Font("TimesRoman", Font.BOLD, 45));
-				graphics.drawString("Press SPACE to Restart", 300, 300);
+				graphics.drawString("Press any key to restart", 270, 300);
 				graphics.setColor(Color.RED);
 				graphics.setFont(new Font("TimesRoman", Font.BOLD, 45));
-				graphics.drawString("GAME OVER", 350, 250);
+				graphics.drawString("GAME OVER", 320, 250);
 				moves = 0;
 				score = 0;
+				timer.stop();
+				delay = 120;
+				timer = new Timer(delay, this);
+				speed = 0;
+				timer.start();
 				lenthOfSnake = 3;
-				repaint();
 			}
 		}
 		graphics.dispose();
@@ -223,7 +244,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 			score = 0;
 			lenthOfSnake = 3;
 			repaint();
-			
+
 		}
 		if (k.getKeyCode() == KeyEvent.VK_RIGHT) {
 			moves++;
@@ -236,7 +257,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 			}
 			up = false;
 			down = false;
-			
+
 		}
 		if (k.getKeyCode() == KeyEvent.VK_LEFT) {
 			moves++;
