@@ -7,8 +7,9 @@ public class Frame extends JFrame {
 	public static void startWindow() {
 		JFrame frame = new JFrame();
 		Gameplay gameplay = new Gameplay();
-		ImageIcon image = new ImageIcon("downmouth.png");
+		ImageIcon image = new ImageIcon("assets/downmouth.png");
 		frame.setIconImage(image.getImage());
+
 		// The empty string in the title is to put the title in the middle
 		frame.setTitle("                    " + "                    " + "                    " + "                    "
 				+ "                    " + "A mini snake game project, by Slava");
