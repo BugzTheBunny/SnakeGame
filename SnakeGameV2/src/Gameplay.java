@@ -29,10 +29,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 	private boolean up = false;
 	private boolean down = false;
 	private int lenthOfSnake = 3;
-	private ImageIcon over, rightMount, downMount, upMount, leftMount, snakeImage, titleImage;
+	private ImageIcon rightMount, downMount, upMount, leftMount, snakeImage, titleImage;
 	public int delay = 120;
 	public int speed = 1;
-	private Timer gameTime;
 	private Timer timer;
 	private boolean gameOver = false;
 
@@ -58,10 +57,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
 	public void scorePaint(Graphics graphics) {
 
-			graphics.setColor(Color.WHITE);
-			graphics.setFont(new Font("TimesRoman", Font.BOLD, 14));
-			graphics.drawString("{Great!} +1", appleXpos[xPos], appleYpos[yPos] - 20);
-		
+		graphics.setColor(Color.WHITE);
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 14));
+		graphics.drawString("{Great!} +1", appleXpos[xPos], appleYpos[yPos] - 20);
+
 		graphics.dispose();
 	}
 
